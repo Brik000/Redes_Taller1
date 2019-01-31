@@ -54,28 +54,16 @@ public class Server {
 		  
 		  salida.write(encrypt(str)+"");
 		  
-		  
-		  
-		 
-		 
+		    salida.close();
+			entrada.close();
+			socketClient.close();
+		   
 		 } catch (IOException e) {
 			// TODO Auto-generated catch block
 		      System.out.println("IOException: " + e.getMessage());
 		}
 		   
-		    try {
-				server.close();
-				salida.close();
-				entrada.close();
-				socketClient.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println("IOException: " + e.getMessage());
-			}
-		 
-		 
-		
-		
+	
 	}
 	
 	
