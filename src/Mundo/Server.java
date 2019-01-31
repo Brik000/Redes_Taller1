@@ -54,6 +54,16 @@ public class Server {
 		  
 		  salida.write(encrypt(str)+"");
 		  
+		  while (true) {  
+		        str = entrada.readLine();
+		        salida.write(encrypt(str)+"");
+		        
+			if (str.isEmpty()) 
+				break;
+		      }
+		  
+		  
+		  
 		    salida.close();
 			entrada.close();
 			socketClient.close();
