@@ -27,6 +27,7 @@ public class Server {
 	  */
 	public static String encrypt(String original) {
         String encrypted = "";
+        System.out.println("Entró");
         for (int i = 0; i < original.length(); i++) {
             int c = original.charAt(i) + VALOR_ENCRIPTACION;
             if (c > 126) {
@@ -47,17 +48,22 @@ public class Server {
 		 try {
 	      server = new ServerSocket(PORT);
 		  socketClient = server.accept();
+		  System.out.println("Pasó 1");
 		  entrada=new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
 		  salida=new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-		
+		  
 		  String str = entrada.readLine();
+		  System.out.println("Pasó 2");
+		  String encrypted = encrypt(str);
+		  System.out.println(encrypted);
+		  salida.write(encrypted);
 		  
-		  salida.write(encrypt(str)+"");
-		  
-		  while (true) {  
+		  while (true) {
+			  	salida.flush();
+			  	System.out.println(encrypted);
 		        str = entrada.readLine();
-		        salida.write(encrypt(str)+"");
-		        
+		        encrypted = encrypt(str);
+				salida.write(encrypted);
 			if (str.isEmpty()) 
 				break;
 		      }
