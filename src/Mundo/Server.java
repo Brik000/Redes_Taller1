@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,11 +15,11 @@ public class Server {
 	private static ServerSocket server;
 	private static Socket socketClient ;
 	private static BufferedReader entrada;
-	private static BufferedWriter salida;
+	private static PrintWriter salida;
 	
 	public final static int VALOR_ENCRIPTACION=2;
 	
-	public final static int PORT=126;
+	public final static int PORT=1024;
 	
 	 /**
 	  * Descripcion:Se encarga de encriptar un mensaje recibido por el cliente
@@ -27,7 +28,7 @@ public class Server {
 	  */
 	public static String encrypt(String original) {
         String encrypted = "";
-        System.out.println("Entró");
+        
         for (int i = 0; i < original.length(); i++) {
             int c = original.charAt(i) + VALOR_ENCRIPTACION;
             if (c > 126) {
@@ -43,29 +44,41 @@ public class Server {
 	
 	
 	public static void main(String[] args) {
-			
+			System.out.println("---servidor---");
 		 
 		 try {
+			 boolean control=true;
 	      server = new ServerSocket(PORT);
 		  socketClient = server.accept();
-		  System.out.println("Pasó 1");
+	      System.out.println("ConnexiÃ³n acceptada: "+ socketClient);
+
+		  
 		  entrada=new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-		  salida=new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
+		  salida=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream())),true);
 		  
+
+		  // se recive la cadena del cliente
 		  String str = entrada.readLine();
-		  System.out.println("Pasó 2");
-		  String encrypted = encrypt(str);
-		  System.out.println(encrypted);
-		  salida.write(encrypted);
+
 		  
-		  while (true) {
+		 // System.out.println(str+" cadena");
+		  
+		  //se encripta la cadena
+		  String encrypted = encrypt(str);
+		  
+		//  System.out.println(encrypted+" encriptada");
+		  
+		  //se envia la cadena encriptada
+		  
+		  salida.println(encrypted+" ");
+		  
+		  while (control) {
 			  	salida.flush();
-			  	System.out.println(encrypted);
 		        str = entrada.readLine();
 		        encrypted = encrypt(str);
-				salida.write(encrypted);
+				salida.println(encrypted);
 			if (str.isEmpty()) 
-				break;
+				control=false;
 		      }
 		  
 		  

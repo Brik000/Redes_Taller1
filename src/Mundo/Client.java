@@ -11,11 +11,13 @@ import java.net.UnknownHostException;
 
 public class Client {
 	
-	public final static int PORT = 126;
+	public final static int PORT = 1024;
 	
 	public final static String HOST = "localhost";
 	
 	public static void main(String[] args) {
+		System.out.println("---cliente---");
+		boolean control=true;
 		Socket socket = null;
 		BufferedReader entrada = null;
 		PrintWriter salida = null;
@@ -26,10 +28,23 @@ public class Client {
 			
 			BufferedReader readConsole = new BufferedReader(new InputStreamReader(System.in));
 			String leido = readConsole.readLine();
-			salida.println();
+			salida.println(leido);
 			System.out.println("Respuesta servidor: " + entrada.readLine());
+			
+			while (control) {
+				leido = readConsole.readLine();
+		        salida.println(leido);
+		        leido = entrada.readLine();
+			System.out.println("Respuesta servidor: " + leido);
+			if (leido.isEmpty()) {
+				control=false;
+				}
+			}
+			
+			
+			
 		} catch (UnknownHostException e) {
-			System.out.println("El host no es válido");
+			System.out.println("El host no es vï¿½lido");
 		} catch (IOException e) {
 			System.out.println("Ha habido un problema durante la lectura");
 		}finally {
